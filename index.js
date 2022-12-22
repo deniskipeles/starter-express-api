@@ -13,7 +13,7 @@ const app = express();
 
 app.get("/pdf-image", async (req, res) => {
   // Launch a new browser instance and create a new page.
-  const browser = awaitnpm i puppeteer puppeteer.launch();
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
   const pdfUrl = req.query.url
 
