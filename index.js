@@ -40,14 +40,17 @@ app.get('/convert', async (req, res) => {
             })
             .catch((err) => {
               console.error(err);
+              res.status(500).send({ error: 'An error occurred while processing  images.' });
             });
         }
       })
       .catch((err) => {
         console.error(err);
+        res.status(500).send({ error: 'An error occurred while converting the PDF.' });
       });
   } catch (err) {
     console.error(err);
+    res.status(500).send({ error: 'An error occurred while fetching PDF.' });
   }
 });
 
