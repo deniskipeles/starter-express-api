@@ -1,5 +1,5 @@
 const express = require('express');
-const pdf2pic = require('pdf2pic');
+const {fromPath} = require('pdf2pic');
 const sharp = require('sharp');
 
 const app = express();
@@ -13,12 +13,16 @@ const pdf2picOptions = {
   height: 1080,
 };
 
-const pdf2picConverter = pdf2pic(pdf2picOptions);
+//const pdf2picConverter = pdf2pic(pdf2picOptions);
 
 app.get('/convert', (req, res) => {
   const documentUrl = req.query.url;
 
-  pdf2picConverter.convertBulk(documentUrl, -1)
+  const convert = fromPath(documentUrl, pdf2picOptions);
+  
+  convert.bulk(-1);
+
+  //pdf2picConverter.convertBulk(documentUrl, -1)
     .then((result) => {
       const images = [];
 
