@@ -4,9 +4,9 @@
   "description": "My app description",
   "dependencies": {
     "express": "^4.17.1",
-    "pdf2pic": "^3.6.0",
-    "sharp": "^0.28.3",
-    "node-fetch": "^3.0.0"
+    "pdf2pic": "^2.1.0",
+    "sharp": "^0.29.2",
+    "node-fetch": "^3.3.1"
   },
   "scripts": {
     "start": "node index.js"
