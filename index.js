@@ -13,7 +13,7 @@ const pdf2picOptions = {
   height: 1080,
 };
 
-const pdf2picConverter = new pdf2pic(pdf2picOptions);
+const pdf2picConverter = pdf2pic(pdf2picOptions);
 
 app.get('/convert', (req, res) => {
   const documentUrl = req.query.url;
