@@ -1,52 +1,49 @@
-// const express = require('express')
-// const app = express()
-// app.all('/', (req, res) => {
-//     console.log("Just got a request!")
-//     res.send('Yo!')
-// })
-// app.listen(process.env.PORT || 3000)
-
-const express = require("express");
-const puppeteer = require("puppeteer");
+const express = require('express');
+const pdf2pic = require('pdf2pic');
+const sharp = require('sharp');
 
 const app = express();
+const port = 3000;
 
-app.get("/pdf-image", async (req, res) => {
-  // Launch a new browser instance and create a new page.
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  const pdfUrl = req.query.url
+const pdf2picOptions = {
+  density: 300,
+  savePath: './images',
+  format: 'png',
+  width: 1920,
+  height: 1080,
+};
 
-  // Load the PDF into the page.
-  await page.goto(pdfUrl, { waitUntil: "networkidle0" });
+const pdf2picConverter = new pdf2pic(pdf2picOptions);
 
-  // Capture a screenshot of the page and get the image data as a buffer.
-  const imageBuffer = await page.screenshot({
-    type: "jpeg",
-    encoding: "binary",
-  });
+app.get('/convert', (req, res) => {
+  const documentUrl = req.query.url;
 
-  // Close the browser.
-  await browser.close();
+  pdf2picConverter.convertBulk(documentUrl, -1)
+    .then((result) => {
+      const images = [];
 
-  // Set the response headers.
-  res.set("Content-Type", "image/jpeg");
-  res.set("Content-Length", imageBuffer.length);
+      for (let i = 0; i < result.length; i++) {
+        sharp(result[i].path)
+          .resize({ width: 800 })
+          .toBuffer()
+          .then((buffer) => {
+            images.push(buffer);
 
-  // Send the image data to the client.
-  res.send(imageBuffer);
+            if (images.length === result.length) {
+              res.setHeader('Content-Type', 'application/json');
+              res.send({ images: images });
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 });
 
-
-app.get('/', (req, res) => {
-    console.log("Just got a request!")
-    res.send('Yo!')
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
 })
-app.get('/hello', (req, res) => {
-    console.log("Just got a request!")
-    res.send('hello world!')
-})
-
-app.listen(3000, () => {
-  console.log("Server listening on port 3000");
-});
