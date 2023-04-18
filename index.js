@@ -20,10 +20,9 @@ app.get('/convert', (req, res) => {
 
   const convert = fromPath(documentUrl, pdf2picOptions);
   
-  convert.bulk(-1);
-
+  convert.bulk(-1)
   //pdf2picConverter.convertBulk(documentUrl, -1)
-    .then((result) => {
+  .then((result) => {
       const images = [];
 
       for (let i = 0; i < result.length; i++) {
