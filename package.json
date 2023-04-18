@@ -1,24 +1,14 @@
 {
-  "name": "pdf-to-image-api",
+  "name": "my-app",
   "version": "1.0.0",
-  "description": "API for converting PDF documents to images",
-  "main": "index.js",
+  "description": "My app description",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pdf2pic": "^3.6.0",
+    "sharp": "^0.28.3",
+    "node-fetch": "^3.0.0"
+  },
   "scripts": {
     "start": "node index.js"
-  },
-  "keywords": [
-    "pdf",
-    "image",
-    "conversion",
-    "api"
-  ],
-  "author": "Your Name",
-  "license": "MIT",
-  "dependencies": {
-    "express": "^4.17.2",
-    "pdf2pic": "^2.2.2",
-    "sharp": "^0.28.3",
-    "request": "^2.88.2",
-    "node-fetch": "^3.3.1"
   }
 }
