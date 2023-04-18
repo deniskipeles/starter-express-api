@@ -1,5 +1,5 @@
 const express = require('express');
-const {fromPath} = require('pdf2pic');
+const { fromPath } = require('pdf2pic');
 const sharp = require('sharp');
 
 const app = express();
@@ -13,16 +13,14 @@ const pdf2picOptions = {
   height: 1080,
 };
 
-//const pdf2picConverter = pdf2pic(pdf2picOptions);
-
 app.get('/convert', (req, res) => {
   const documentUrl = req.query.url;
 
   const convert = fromPath(documentUrl, pdf2picOptions);
-  
-  convert.bulk(-1)
-  //pdf2picConverter.convertBulk(documentUrl, -1)
-  .then((result) => {
+
+  convert
+    .bulk(-1)
+    .then((result) => {
       const images = [];
 
       for (let i = 0; i < result.length; i++) {
@@ -39,14 +37,16 @@ app.get('/convert', (req, res) => {
           })
           .catch((err) => {
             console.error(err);
+            res.status(500).send({ error: 'An error occurred while processing the images.' });
           });
       }
     })
     .catch((err) => {
       console.error(err);
+      res.status(500).send({ error: 'An error occurred while converting the PDF.' });
     });
 });
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
-})
+});
