@@ -1,7 +1,7 @@
 const express = require('express');
+const request = require('request');
 const { fromBuffer } = require('pdf2pic');
 const sharp = require('sharp');
-const fetch = require('node-fetch');
 
 const app = express();
 const port = 3000;
@@ -14,13 +14,16 @@ const pdf2picOptions = {
   height: 1080,
 };
 
-app.get('/convert', async (req, res) => {
+app.get('/convert', (req, res) => {
   const documentUrl = req.query.url;
 
-  try {
-    const response = await fetch(documentUrl);
-    const pdfBuffer = await response.buffer();
-    const convert = fromBuffer(pdfBuffer, pdf2picOptions);
+  request.get({ url: documentUrl, encoding: null }, (error, response, body) => {
+    if (error || response.statusCode !== 200) {
+      res.status(400).send('Error fetching PDF');
+      return;
+    }
+
+    const convert = fromBuffer(body, pdf2picOptions);
 
     convert.bulk(-1)
       .then((result) => {
@@ -40,18 +43,15 @@ app.get('/convert', async (req, res) => {
             })
             .catch((err) => {
               console.error(err);
-              res.status(500).send({ error: 'An error occurred while processing  images.' });
+              res.status(500).send('Error processing PDF');
             });
         }
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).send({ error: 'An error occurred while converting the PDF.' });
+        res.status(500).send('Error converting PDF to images');
       });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: 'An error occurred while fetching PDF.' });
-  }
+  });
 });
 
 app.listen(port, () => {
