@@ -2,8 +2,10 @@ FROM alpine:3.16
 
 ENV NODE_VERSION 20.0.0
 
-RUN apk update
-RUN apk add --no-cache imagemagick bash pngcrush optipng=0.7.7-r0
+#RUN apk update
+#RUN apk add --no-cache imagemagick bash pngcrush optipng=0.7.7-r0
+RUN apk add --no-cache imagemagick
+RUN apk add --no-cache graphicsmagick
 # CMD ["/bin/bash"]
 
 RUN addgroup -g 1000 node \
