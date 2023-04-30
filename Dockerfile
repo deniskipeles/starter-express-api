@@ -99,6 +99,7 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
 
 WORKDIR /usr/app
 COPY ./ /usr/app
+RUN npm install -g gm
 RUN npm install
 EXPOSE 3000
 
