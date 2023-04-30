@@ -1,14 +1,16 @@
 {
-  "name": "my-app",
+  "name": "docker_web_app",
   "version": "1.0.0",
-  "description": "My app",
+  "description": "Node.js on Docker",
+  "author": "Denis Kemboi narydjin@gmail.com",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "pdf2pic": "^2.1.0",
     "sharp": "^0.28.3",
     "request": "^2.88.2"
-  },
-  "scripts": {
-    "start": "node index.js"
   }
 }
