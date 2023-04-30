@@ -4,8 +4,9 @@ ENV NODE_VERSION 20.0.0
 
 #RUN apk update
 #RUN apk add --no-cache imagemagick bash pngcrush optipng=0.7.7-r0
-RUN apk add --no-cache imagemagick
+RUN apk add --no-cache ghostscript
 RUN apk add --no-cache graphicsmagick
+RUN apk add --no-cache imagemagick
 # CMD ["/bin/bash"]
 
 RUN addgroup -g 1000 node \
@@ -99,7 +100,7 @@ RUN apk add --no-cache --virtual .build-deps-yarn curl gnupg tar \
 
 WORKDIR /usr/app
 COPY ./ /usr/app
-RUN npm install -g gm
+# RUN npm install -g gm
 RUN npm install
 EXPOSE 3000
 
